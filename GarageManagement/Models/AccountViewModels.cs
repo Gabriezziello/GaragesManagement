@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManagement.Models
@@ -79,6 +80,30 @@ namespace GarageManagement.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]        
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]        
+        [Display(Name = "Surname")]
+        public string Surname { get; set; }
+
+        [Required]       
+        [Display(Name = "ContactNumber")]
+        public string ContactNumber { get; set; }
+
+        [Required]        
+        [Display(Name = "BirthDate")]
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
+        [Display(Name = "isStaff")]        
+        public bool isStaff { get; set; }
+
+        public int  Id { get; set; }
+        
     }
 
     public class ResetPasswordViewModel

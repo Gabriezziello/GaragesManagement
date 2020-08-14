@@ -1,0 +1,55 @@
+﻿@model List<ServicesAndParts>
+@{
+    ViewBag.Title = "Admin - Services And Auto Parts";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <a href="/Manage/EditService/0"><input type="button" class="btn btn-success " value="Add new Service/Part" /></a>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <table id="tblServicesAndParts" cellpadding="0" cellspacing="0" border="1" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.Price</td>
+                            <td><a href="/Manage/EditService?id=@item.Id"><span class="glyphicon glyphicon-edit"></span></a><a href="/Manage/RemoveService?id=@item.Id"><span class="glyphicon glyphicon-erase"></span></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#tblServicesAndParts').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['print']
+            });
+        });
+    </script>
+}

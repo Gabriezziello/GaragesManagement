@@ -1,0 +1,168 @@
+﻿@model GarageManagement.Models.BookingView
+@{
+    ViewBag.Title = "Book a service";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+@using (Html.BeginForm("Booking", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Please, fill the details and pick an available date.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.VehicleType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.VehicleType, new SelectList(ViewBag.VehicleTypeList, "Value", "Text", Model != null ? Model.VehicleType : 1), new { @class = "col-md-2 form-control", @id = "VehicleType" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EngineType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.EngineType, new SelectList(ViewBag.EngineTypes, "Value", "Text", Model != null ? Model.EngineType : 1), new { @class = "col-md-2 form-control", @id = "EngineType" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Make, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.Make, new SelectList(new List<SelectListItem>(), "Value", "Text"), new { @class = "col-md-2 form-control", @id = "make", @placeHolder = "Please select a vehicle type" })
+        </div>
+
+    </div>
+    <div class="form-group hidden" id="duedateView">
+        @Html.LabelFor(m => m.Other, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Other, new { @class = "form-control", @id = "Other", @placeHolder = "Please type the vehicle's make" })
+        </div>
+    </div>
+    <div class="form-group ">
+        @Html.LabelFor(m => m.VRC, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.VRC, new { @class = "form-control", @placeHolder = "Please type the VRC" })
+        </div>
+    </div>
+    <div class="form-group ">
+        @Html.LabelFor(m => m.Licence, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Licence, new { @class = "form-control", @placeHolder = "Please type the VRC" })
+        </div>
+    </div>
+    <div class="form-group ">
+        @Html.LabelFor(m => m.VLC, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.VLC, new { @class = "form-control", @placeHolder = "Please type the VLC" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.BookingTypeId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.BookingTypeId, new SelectList(ViewBag.BookingTypes, "Value", "Text"), new { @class = "col-md-2 form-control" })
+        </div>
+    </div>
+    <div class="form-group" style="margin-bottom:0px">
+        @Html.LabelFor(m => m.DueDate, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker5' style="display:block">
+                                <input type='text' class="form-control" name="DueDate" id="DueDate" />
+                                <span class="input-group-addon" style="    display: inline-table;padding: 7px 12px;font-size: 17px;">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Observation, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Observation, new { @class = "form-control", @placeHolder = "Please tell us a bit about the problem" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Book" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var make = @Html.Raw(Model != null ? Json.Encode(Model.Make): "undefined");
+
+        $(document).ready(function () {
+
+            $("#VehicleType").on("change", function () {
+                    $.ajax({
+                        url: '/Manage/GetMakes',
+                        type: 'POST',
+                        data: { "type": $(this).val() },
+                        dataType: 'json',
+                        success: function (data) {
+                            $('#make').html('');
+                            $.each(data.list, function (key, value) {
+                                $('#make')
+                                    .append($('<option>', { value: key })
+                                        .text(key));
+                            });
+                            if (make != "" && make != null && make != undefined && make != "undefined") {
+                                $('#make').val(make);
+                                $("#make").change();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.responseText);
+                        }
+                    });
+
+            });
+
+            $("#make").on("change", function () {
+                if ($(this).val() == "Other") {
+                    $("#duedateView").removeClass("hidden");
+                } else {
+                    $("#duedateView").addClass("hidden");
+                }
+            });
+
+            $("#VehicleType").change();
+        });
+    </script>
+    <script type="text/javascript">
+
+        $.ajax({
+            url: '/Manage/GetDisabledDates',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                $(function () {
+                    $('#datetimepicker5').datetimepicker({
+                        format: 'DD/MM/yyyy',
+                        defaultDate: new Date(),
+                        disabledDates: data.list,
+                        daysOfWeekDisabled: [0]
+                    });
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+
+
+    </script>
+}

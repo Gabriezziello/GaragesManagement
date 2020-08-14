@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GarageManagement.Models;
+using System.Collections.Generic;
 
 namespace GarageManagement.Controllers
 {
@@ -17,15 +18,17 @@ namespace GarageManagement.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _applicationDbContext;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationDbContext applicationDbContext)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _applicationDbContext = applicationDbContext;
         }
 
         public ApplicationSignInManager SignInManager
@@ -34,9 +37,9 @@ namespace GarageManagement.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -57,6 +60,7 @@ namespace GarageManagement.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -120,7 +124,7 @@ namespace GarageManagement.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -142,6 +146,62 @@ namespace GarageManagement.Controllers
             return View();
         }
 
+
+        public ActionResult Staff()
+        {
+            var data = new List<Staff>();
+            using (GarageManagementEntities entities = new GarageManagementEntities())
+            {
+
+                data = entities.Staff.ToList();
+
+
+            }
+            return View(data);
+        }
+
+        //
+        // GET: /Account/Register
+
+        public ActionResult RegisterStaff(int? id)
+        {
+            RegisterViewModel model = null;
+
+            if (id.HasValue && id.Value > 0)
+            {
+                model = new RegisterViewModel();
+                using (GarageManagementEntities entities = new GarageManagementEntities())
+                {
+                    var staff = entities.Staff.FirstOrDefault(x => x.Id == id);
+                    var user = entities.AspNetUsers.FirstOrDefault(x => x.Id == staff.UserId);
+                    model.isStaff = true;
+                    model.Email = user.Email;
+                    model.Name = staff.Name;
+                    model.Surname = staff.Surname;
+                    model.BirthDate = staff.BirthDate.Value;
+                    model.ContactNumber = staff.ContactNumber;
+                    model.Id = staff.Id;
+                }
+            }
+            return View(model);
+        }
+
+        public ActionResult RemoveStaff(int id)
+        {
+            using (GarageManagementEntities entities = new GarageManagementEntities())
+            {
+                var model = entities.Staff.FirstOrDefault(x => x.Id == id);
+                var user = UserManager.FindById(model.UserId);
+                entities.Staff.Remove(model);
+                entities.SaveChanges();
+                UserManager.Delete(user);
+               
+            }
+
+            return RedirectToAction("Staff", "Account");
+        }
+
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -155,20 +215,62 @@ namespace GarageManagement.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    if (!model.isStaff)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        UserManager.AddToRole(user.Id, "Customer");
+                        using (GarageManagementEntities entities = new GarageManagementEntities())
+                        {
+                            entities.Customer.Add(new Customer()
+                            {
+                                Name = model.Name,
+                                Surname = model.Surname,
+                                BirthDate = model.BirthDate,
+                                ContactNumber = model.ContactNumber,
+                                UserId = user.Id
+                            });
+                            entities.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        UserManager.AddToRole(user.Id, "Staff");
+                        using (GarageManagementEntities entities = new GarageManagementEntities())
+                        {
+                            entities.Staff.Add(new Staff()
+                            {
+                                Name = model.Name,
+                                Surname = model.Surname,
+                                BirthDate = model.BirthDate,
+                                ContactNumber = model.ContactNumber,
+                                UserId = user.Id
+                            });
+                            entities.SaveChanges();
+                        }
+                    }
+
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    ViewBag.User = user;
+                    if (model.isStaff)
+                    {
+                        return RedirectToAction("RegisterStaffConfirmation", "Home");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
+            if (model.isStaff)
+            {
+                return View("RegisterStaff", model);
+            }
             return View(model);
         }
 

@@ -20,6 +20,11 @@ namespace GarageManagement.Controllers
             return View();
         }
 
+        public ActionResult RegisterStaffConfirmation()
+        {
+           return View();
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

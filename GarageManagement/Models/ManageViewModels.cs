@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -83,4 +84,75 @@ namespace GarageManagement.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+
+    public class Prods
+    {
+        public int qtd { get; set; }
+        public int id { get; set; }
+    }
+
+    public class BookingView
+    {
+        [Required]
+        [Display(Name = "Vehicle Type")]
+        public int VehicleType { get; set; }
+
+        [Required]
+        [Display(Name = "Engine Type")]
+        public int EngineType { get; set; }
+
+        [Required]
+        [Display(Name = "Make")]
+        public string Make { get; set; }
+
+        [Required]
+        [Display(Name = "Booking Type")]
+        public int BookingTypeId { get; set; }
+
+        [Required]
+        [Display(Name = "Date")]
+        [DataType(DataType.Date)]
+        public DateTime DueDate { get; set; }
+
+        [Required]
+        [Display(Name = "Observation")]
+        public string Observation { get; set; }
+                
+        [Display(Name = "Other")]
+        public string Other { get; set; }
+
+        [Required]
+        [Display(Name = "VRC")]
+        public string VRC { get; set; }
+
+        [Required]
+        [Display(Name = "VLC")]
+        public string VLC { get; set; }
+
+        [Required]
+        [Display(Name = "Licence")]
+        public string Licence { get; set; }
+
+        [Display(Name = "Basic Cost")]
+        public decimal BasicCost { get; set; }
+
+        public string StatusName { get; set; }
+        public int StatusId { get; set; }
+        public int StaffId { get; set; }
+        public int Id { get; set; }
+    }
+
+    public class ServicesAndPartsView
+    {
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Price")]
+        public decimal Price { get; set; }
+
+        public int Id { get; set; }
+    }
 }
+

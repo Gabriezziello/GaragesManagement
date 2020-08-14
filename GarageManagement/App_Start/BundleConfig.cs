@@ -22,9 +22,26 @@ namespace GarageManagement
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/dataTable").Include(
+                      "~/Scripts/Datatables/jquery.dataTables.min.js",
+                      "~/Scripts/Datatables/dataTables.jqueryui.min.js",
+                      "~/Scripts/Datatables/dataTables.buttons.min.js",
+                      "~/Scripts/Datatables/buttons.print.min.js"
+                      ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/DataTables/css/jquery.dataTables.min.css",
+                      "~/Content/DataTables/css/dataTables.jqueryui.min.css",
+                      "~/Content/DataTables/css/buttons.dataTables.min.css"
+                     ));
+
+            bundles.Add(new ScriptBundle("~/bundles/moments").Include(
+                     "~/Scripts/moment.js"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datepicker").Include(
+                     "~/Scripts/bootstrap-datetimepicker.js"));
         }
     }
 }
