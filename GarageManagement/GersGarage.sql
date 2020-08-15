@@ -912,6 +912,3 @@ insert into ServicesAndParts values
 ),('VIAIR VIAIR Metal Remote Inlet Air Filter Assembly', 9.99
 ),('VIAIR VIAIR Remote Intake Air Filter Assembly', 4.99
 ),('TeraFlex TeraFlex ARB Compressor Under Seat Mounting Kit ',84.99)
-
-
-
