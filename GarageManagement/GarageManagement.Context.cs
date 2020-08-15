@@ -25,7 +25,6 @@ namespace GarageManagement
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
@@ -36,7 +35,6 @@ namespace GarageManagement
         public virtual DbSet<VehicleType> VehicleType { get; set; }
         public virtual DbSet<BookingTypes> BookingTypes { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<Brands> Brands { get; set; }
         public virtual DbSet<EngineType> EngineType { get; set; }
         public virtual DbSet<Bookings> Bookings { get; set; }
         public virtual DbSet<ServicesAndParts> ServicesAndParts { get; set; }

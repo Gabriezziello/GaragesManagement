@@ -1,26 +1,591 @@
-Create table Customer(
-Id int identity(1,1),
-Name varchar(100), 
-Surname varchar(100), 
-BirthDate Date,
-ContactNumber varchar(10), 
-UserId nvarchar(128),
-primary key(Id)
-)
 
-Create table VehicleType(
-Id int identity(1,1),
-Name varchar(100),
-primary key(Id) )
+USE [master]
+GO
+/****** Object:  Database [GarageManagement]    Script Date: 08/15/2020 17:18:07 ******/
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'GarageManagement')
+BEGIN
+CREATE DATABASE [GarageManagement] ON  PRIMARY 
+( NAME = N'GarageManagement.mdf', FILENAME = N'C:\Facul CCT\FinalProject\GarageManagement\GarageManagement\App_Data\GarageManagement.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'GarageManagement_log.ldf', FILENAME = N'C:\Facul CCT\FinalProject\GarageManagement\GarageManagement\App_Data\GarageManagement_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+END
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GarageManagement].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [GarageManagement] SET ANSI_NULL_DEFAULT OFF
+GO
+ALTER DATABASE [GarageManagement] SET ANSI_NULLS OFF
+GO
+ALTER DATABASE [GarageManagement] SET ANSI_PADDING OFF
+GO
+ALTER DATABASE [GarageManagement] SET ANSI_WARNINGS OFF
+GO
+ALTER DATABASE [GarageManagement] SET ARITHABORT OFF
+GO
+ALTER DATABASE [GarageManagement] SET AUTO_CLOSE ON
+GO
+ALTER DATABASE [GarageManagement] SET AUTO_CREATE_STATISTICS ON
+GO
+ALTER DATABASE [GarageManagement] SET AUTO_SHRINK OFF
+GO
+ALTER DATABASE [GarageManagement] SET AUTO_UPDATE_STATISTICS ON
+GO
+ALTER DATABASE [GarageManagement] SET CURSOR_CLOSE_ON_COMMIT OFF
+GO
+ALTER DATABASE [GarageManagement] SET CURSOR_DEFAULT  GLOBAL
+GO
+ALTER DATABASE [GarageManagement] SET CONCAT_NULL_YIELDS_NULL OFF
+GO
+ALTER DATABASE [GarageManagement] SET NUMERIC_ROUNDABORT OFF
+GO
+ALTER DATABASE [GarageManagement] SET QUOTED_IDENTIFIER OFF
+GO
+ALTER DATABASE [GarageManagement] SET RECURSIVE_TRIGGERS OFF
+GO
+ALTER DATABASE [GarageManagement] SET  ENABLE_BROKER
+GO
+ALTER DATABASE [GarageManagement] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
+GO
+ALTER DATABASE [GarageManagement] SET DATE_CORRELATION_OPTIMIZATION OFF
+GO
+ALTER DATABASE [GarageManagement] SET TRUSTWORTHY OFF
+GO
+ALTER DATABASE [GarageManagement] SET ALLOW_SNAPSHOT_ISOLATION OFF
+GO
+ALTER DATABASE [GarageManagement] SET PARAMETERIZATION SIMPLE
+GO
+ALTER DATABASE [GarageManagement] SET READ_COMMITTED_SNAPSHOT ON
+GO
+ALTER DATABASE [GarageManagement] SET HONOR_BROKER_PRIORITY OFF
+GO
+ALTER DATABASE [GarageManagement] SET  READ_WRITE
+GO
+ALTER DATABASE [GarageManagement] SET RECOVERY SIMPLE
+GO
+ALTER DATABASE [GarageManagement] SET  MULTI_USER
+GO
+ALTER DATABASE [GarageManagement] SET PAGE_VERIFY CHECKSUM
+GO
+ALTER DATABASE [GarageManagement] SET DB_CHAINING OFF
+GO
+USE [GarageManagement]
+GO
+/****** Object:  Table [dbo].[EngineType]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EngineType]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[EngineType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Customer]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Customer]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Customer](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+	[Surname] [varchar](100) NULL,
+	[BirthDate] [date] NULL,
+	[ContactNumber] [varchar](10) NULL,
+	[UserId] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Brands]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Brands]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Brands](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[BookingTypes]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BookingTypes]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[BookingTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUsers]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[AspNetUsers](
+	[Id] [nvarchar](128) NOT NULL,
+	[Email] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEndDateUtc] [datetime] NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL,
+	[UserName] [nvarchar](256) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUsers]') AND name = N'UserNameIndex')
+CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers] 
+(
+	[UserName] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetRoles]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[AspNetRoles](
+	[Id] [nvarchar](128) NOT NULL,
+	[Name] [nvarchar](256) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetRoles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetRoles]') AND name = N'RoleNameIndex')
+CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[AspNetRoles] 
+(
+	[Name] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[__MigrationHistory]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[__MigrationHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ContextKey] [nvarchar](300) NOT NULL,
+	[Model] [varbinary](max) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC,
+	[ContextKey] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[ServicesAndParts]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ServicesAndParts]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[ServicesAndParts](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+	[Price] [decimal](6, 2) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[VehicleType]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[VehicleType]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[VehicleType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Status]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Status]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Status](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Staff]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Staff]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Staff](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](100) NULL,
+	[Surname] [varchar](100) NULL,
+	[BirthDate] [date] NULL,
+	[ContactNumber] [varchar](10) NULL,
+	[UserId] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Makes]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Makes]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Makes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[VehicleTypeId] [int] NOT NULL,
+	[Name] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[AspNetUserRoles](
+	[UserId] [nvarchar](128) NOT NULL,
+	[RoleId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[RoleId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]') AND name = N'IX_RoleId')
+CREATE NONCLUSTERED INDEX [IX_RoleId] ON [dbo].[AspNetUserRoles] 
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]') AND name = N'IX_UserId')
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserRoles] 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserLogins]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[AspNetUserLogins](
+	[LoginProvider] [nvarchar](128) NOT NULL,
+	[ProviderKey] [nvarchar](128) NOT NULL,
+	[UserId] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_dbo.AspNetUserLogins] PRIMARY KEY CLUSTERED 
+(
+	[LoginProvider] ASC,
+	[ProviderKey] ASC,
+	[UserId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserLogins]') AND name = N'IX_UserId')
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserLogins] 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserClaims]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[AspNetUserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [nvarchar](128) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.AspNetUserClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[AspNetUserClaims]') AND name = N'IX_UserId')
+CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserClaims] 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Bookings]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Bookings]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Bookings](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Make] [varchar](100) NULL,
+	[BookingTypeId] [int] NOT NULL,
+	[DueDate] [date] NULL,
+	[StatusId] [int] NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[Observation] [varchar](1000) NULL,
+	[VRC] [varchar](100) NULL,
+	[VLC] [varchar](100) NULL,
+	[EngineTypeId] [int] NOT NULL,
+	[VehicleTypeId] [int] NOT NULL,
+	[StaffId] [int] NULL,
+	[Licence] [varchar](100) NULL,
+	[BasicCost] [decimal](6, 2) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[booking_cost]    Script Date: 08/15/2020 17:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[booking_cost]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[booking_cost](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[BookingId] [int] NOT NULL,
+	[ServicesAndPartsId] [int] NOT NULL,
+	[Price] [decimal](6, 2) NULL,
+	[Qtd] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+/****** Object:  Default [DF__Bookings__Status__6D0D32F4]    Script Date: 08/15/2020 17:18:10 ******/
+IF Not EXISTS (SELECT * FROM sys.default_constraints WHERE object_id = OBJECT_ID(N'[dbo].[DF__Bookings__Status__6D0D32F4]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+Begin
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF__Bookings__Status__6D0D32F4]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Bookings] ADD  DEFAULT ((1)) FOR [StatusId]
+END
+
+
+End
+GO
+/****** Object:  ForeignKey [FK__Staff__UserId__3F466844]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Staff__UserId__3F466844]') AND parent_object_id = OBJECT_ID(N'[dbo].[Staff]'))
+ALTER TABLE [dbo].[Staff]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Makes__VehicleTy__3C69FB99]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Makes__VehicleTy__3C69FB99]') AND parent_object_id = OBJECT_ID(N'[dbo].[Makes]'))
+ALTER TABLE [dbo].[Makes]  WITH CHECK ADD FOREIGN KEY([VehicleTypeId])
+REFERENCES [dbo].[VehicleType] ([Id])
+GO
+/****** Object:  ForeignKey [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]'))
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]'))
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId]
+GO
+/****** Object:  ForeignKey [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]'))
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserRoles]'))
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
+GO
+/****** Object:  ForeignKey [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserLogins]'))
+ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserLogins]'))
+ALTER TABLE [dbo].[AspNetUserLogins] CHECK CONSTRAINT [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId]
+GO
+/****** Object:  ForeignKey [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserClaims]'))
+ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]') AND parent_object_id = OBJECT_ID(N'[dbo].[AspNetUserClaims]'))
+ALTER TABLE [dbo].[AspNetUserClaims] CHECK CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]
+GO
+/****** Object:  ForeignKey [FK__Bookings__Bookin__6E01572D]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__Bookin__6E01572D]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([BookingTypeId])
+REFERENCES [dbo].[BookingTypes] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Bookings__Custom__6EF57B66]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__Custom__6EF57B66]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Bookings__Engine__70DDC3D8]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__Engine__70DDC3D8]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([EngineTypeId])
+REFERENCES [dbo].[EngineType] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Bookings__StaffI__72C60C4A]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__StaffI__72C60C4A]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([StaffId])
+REFERENCES [dbo].[Staff] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Bookings__Status__6FE99F9F]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__Status__6FE99F9F]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([StatusId])
+REFERENCES [dbo].[Status] ([Id])
+GO
+/****** Object:  ForeignKey [FK__Bookings__Vehicl__71D1E811]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__Bookings__Vehicl__71D1E811]') AND parent_object_id = OBJECT_ID(N'[dbo].[Bookings]'))
+ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD FOREIGN KEY([VehicleTypeId])
+REFERENCES [dbo].[VehicleType] ([Id])
+GO
+/****** Object:  ForeignKey [FK__booking_c__Booki__7B5B524B]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__booking_c__Booki__7B5B524B]') AND parent_object_id = OBJECT_ID(N'[dbo].[booking_cost]'))
+ALTER TABLE [dbo].[booking_cost]  WITH CHECK ADD FOREIGN KEY([BookingId])
+REFERENCES [dbo].[Bookings] ([Id])
+GO
+/****** Object:  ForeignKey [FK__booking_c__Servi__7C4F7684]    Script Date: 08/15/2020 17:18:10 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK__booking_c__Servi__7C4F7684]') AND parent_object_id = OBJECT_ID(N'[dbo].[booking_cost]'))
+ALTER TABLE [dbo].[booking_cost]  WITH CHECK ADD FOREIGN KEY([ServicesAndPartsId])
+REFERENCES [dbo].[ServicesAndParts] ([Id])
+GO
+
 
 insert into VehicleType values ('Motorbike'), ('Car'), ('Small Van'),('Small Bus')
-
-Create table Makes(
-Id int identity(1,1),
-VehicleTypeId int not null,
-Name varchar(100),
-primary key(Id),
-FOREIGN KEY (VehicleTypeId) REFERENCES VehicleType(Id) )
 
 insert into makes values
 (1,'Ducati Diavel 1260 S')
@@ -280,84 +845,24 @@ insert into makes values
 ,(4,'Renault Trafic')
 
 
-
-
-Create table Staff(
-Id int identity(1,1),
-Name varchar(100), 
-Surname varchar(100), 
-BirthDate Date,
-ContactNumber varchar(10), 
-UserId nvarchar(128),
-primary key(Id),
-FOREIGN KEY (UserId) REFERENCES AspNetUsers(Id) )
-
 insert into AspNetRoles (Id, Name) values (NEWID(), 'Staff'),
 (NEWID(),'Admin'),(NEWID(),'Customer')
-
-select * from BookingTypes
-select * from AspNetUserRoles
-
-Create table BookingTypes(
-Id int identity(1,1),
-Name varchar(100),
-primary key(Id) )
 
 insert into BookingTypes (Name) values ('Annual Service'),
 ('Major Service'),(' Repair / Fault'),(' Major Repair')
 
-Create table Status(
-Id int identity(1,1),
-Name varchar(100),
-primary key(Id) )
-
 insert into [Status] (Name) values ('Booked'),
 ('In Service'),('Fixed / Completed'),('Collected'),('Unrepairable / Scrapped')
-
-Create table EngineType(
-Id int identity(1,1),
-Name varchar(100),
-primary key(Id) )
 
 insert into EngineType (Name) values ('Diesel'),
 ('Petrol'),('Hybrid'),('Electric')
 
-
-Create table Bookings(
-Id int identity(1,1),
-Make varchar(100),
-BookingTypeId int not null,
-DueDate Date,
-StatusId int not null default(1),
-CustomerId int not null,
-Observation  varchar(1000),
-VRC varchar(100),
-VLC varchar(100),
-EngineTypeId int not null,
-VehicleTypeId int not null,
-StaffId int null,
-Licence varchar(100),
-primary key(Id),
-FOREIGN KEY (BookingTypeId) REFERENCES BookingTypes(Id),
-FOREIGN KEY (CustomerId) REFERENCES Customer(Id),
-FOREIGN KEY (StatusId) REFERENCES Status(Id),
-FOREIGN KEY (EngineTypeId) REFERENCES EngineType(Id),
-FOREIGN KEY (VehicleTypeId) REFERENCES VehicleType(Id),
-FOREIGN KEY (StaffId) REFERENCES Staff(Id)
-)
-
+--user admin@admin.com
+--pwd Admin123!
 insert into AspNetUsers (Id, Email, PasswordHash, SecurityStamp, UserName, LockoutEnabled, EmailConfirmed, PhoneNumberConfirmed, TwoFactorEnabled, AccessFailedCount)
 values ( '04530ac5-da5c-48ab-8b5c-ff13ec1038a0', 'admin@admin.com', 'AO7bDCvTNwUTSOVTU3HGJQ8EYvd/x70SBnOxoECrBRsR2fy7kDrNvoFtmsPdU3EjHA==', '4efc7d5a-6655-4a2c-b5f4-2784ecffdc99', 'admin@admin.com', 1, 0, 0, 0, 0)
 
 insert into AspNetUserRoles values ('04530ac5-da5c-48ab-8b5c-ff13ec1038a0', (select Id from AspNetRoles where Name = 'Admin'))
-
-Create table ServicesAndParts(
-Id int identity(1,1),
-Name varchar(100),
-Price decimal(6,2),
-primary key(Id) )
-
-
 
 insert into ServicesAndParts values
 ('SHOCK ABSORBER', 0
@@ -407,19 +912,6 @@ insert into ServicesAndParts values
 ),('VIAIR VIAIR Metal Remote Inlet Air Filter Assembly', 9.99
 ),('VIAIR VIAIR Remote Intake Air Filter Assembly', 4.99
 ),('TeraFlex TeraFlex ARB Compressor Under Seat Mounting Kit ',84.99)
-
-alter table bookings add BasicCost decimal(6,2)
-
-Create table booking_cost(
-Id int identity(1,1),
-BookingId int not null,
-ServicesAndPartsId int not null,
-Price decimal(6,2),
-Qtd int not null,
-primary key(Id),
-FOREIGN KEY (BookingId) REFERENCES bookings(Id),
-FOREIGN KEY (ServicesAndPartsId) REFERENCES ServicesAndParts(Id)
-)
 
 
 

@@ -60,6 +60,11 @@ namespace GarageManagement.Controllers
             return View();
         }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
@@ -388,6 +393,18 @@ from Staff a left join Bookings b on b.StaffId = a.Id and (b.DueDate = '{0}' or 
             return View();
         }
 
+        public ActionResult Print(int id)
+        {
+            var model = new PrintView();
+            using (GarageManagementEntities entities = new GarageManagementEntities())
+            {
+                model.Products = entities.booking_cost.Include("ServicesAndParts").Where(x => x.BookingId == id).ToList();
+                model.Booking = entities.Bookings.Include("Customer").Include("BookingTypes").FirstOrDefault(x => x.Id == id);
+            }
+            
+            return View(model);
+        }
+
         public ActionResult EditService(int id)
         {
 
@@ -459,49 +476,60 @@ from Staff a left join Bookings b on b.StaffId = a.Id and (b.DueDate = '{0}' or 
         {
            
             using (GarageManagementEntities entities = new GarageManagementEntities())
-            {                
-                foreach (var item in prods)
+            {        
+               if(prods != null)
                 {
-                    var prod = entities.ServicesAndParts.FirstOrDefault(x => x.Id == item.id);
-                    var model = new booking_cost()
+                    foreach (var item in prods)
                     {
-                        BookingId = bookingId,
-                        Price = prod.Price,
-                        Qtd = item.qtd,
-                        ServicesAndPartsId = item.id
-                    };
+                        var prod = entities.ServicesAndParts.FirstOrDefault(x => x.Id == item.id);
+                        var model = new booking_cost()
+                        {
+                            BookingId = bookingId,
+                            Price = prod.Price,
+                            Qtd = item.qtd,
+                            ServicesAndPartsId = item.id
+                        };
 
-                    entities.booking_cost.Add(model);
-                    
-                }
+                        entities.booking_cost.Add(model);
 
-                entities.SaveChanges();
-                
+                    }
+
+                    entities.SaveChanges();
+                }                 
                
             }
-            return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = "success", data = GetProductsByOrder(bookingId) }, JsonRequestBehavior.AllowGet);
 
         }
 
-        public JsonResult GetProductsByOrder(int id)
+        public object GetProductsByOrder(int id)
         {
             var items = new List<booking_cost>();
             using (GarageManagementEntities entities = new GarageManagementEntities())
             {
-                items = entities.booking_cost.Where(x => x.BookingId == id).ToList();
+                items = entities.booking_cost.Include("Bookings").Include("ServicesAndParts").Where(x => x.BookingId == id).ToList();
             }
 
-            return Json(new { result = items }, JsonRequestBehavior.AllowGet);
-         
+            return items.Select(x=> new { Id=x.Id, Name = x.ServicesAndParts.Name, Price = x.Price, Qtd = x.Qtd }).ToList();
         }
 
-        public ActionResult BookingsAdmin()
+        public void RemoveProd(int id)
+        {
+            using (GarageManagementEntities entities = new GarageManagementEntities())
+            {
+                var model = entities.booking_cost.FirstOrDefault(x => x.Id == id);
+                entities.booking_cost.Remove(model);
+                entities.SaveChanges();
+            }
+        }
+
+            public ActionResult BookingsAdmin()
         {
             var data = new List<Bookings>();
             using (GarageManagementEntities entities = new GarageManagementEntities())
             {
 
-                data = entities.Bookings.Include("Customer").Include("BookingTypes").Include("Status").ToList();
+                data = entities.Bookings.Include("Customer").Include("BookingTypes").Include("Status").Include("Staff").ToList();
 
 
             }
@@ -524,7 +552,8 @@ from Staff a left join Bookings b on b.StaffId = a.Id and (b.DueDate = '{0}' or 
             string[] dates;
             using (GarageManagementEntities entities = new GarageManagementEntities())
             {
-                dates = entities.Database.SqlQuery<string>("select convert(varchar, DueDate, 10) from Bookings group by DueDate having COUNT(*) >= 5").ToList().ToArray();
+                dates = entities.Database.SqlQuery<string>("select convert(varchar, DueDate, 10) from Bookings group by DueDate having COUNT(*) >= 5")
+                    .ToList().ToArray();
                
             }
            // dates = new string[] { "08/17/2020", "08/18/2020" };

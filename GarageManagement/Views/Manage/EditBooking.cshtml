@@ -121,10 +121,13 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-4">
+            <div class="col-md-offset-1 col-md-3">
                 <input type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" value="Add Services/Parts" />
             </div>
-            <div class="col-md-offset-2 col-md-4">
+            <div class="col-md-offset-1 col-md-3">
+                <a href="/manage/print/@Model.Id" target="_blank"><input type="button" class="btn btn-primary" data-toggle="modal" value="Invoice" /></a>
+            </div>
+            <div class="col-md-offset-1 col-md-3">
                 <input type="submit" class="btn btn-default" value="Save" />
             </div>
         </div>
@@ -168,17 +171,33 @@
                 data: { "bookingId": $("#Id").val(), "prods": prods },
                 dataType: 'json',
                 success: function (Data) {
-                    console.log(Data);
+                   
                     var row = "";
                     $.each(Data.data, function (index, value) {
-                        row = row + "<tr>";
-                        row = row + "<td>"  + "</td>";
+                        row = row + "<tr id='prod" + value.Id + "'>";
+                        row = row + "<td>" + value.Name + "</td>";
                         row = row + "<td>" + value.Qtd + "</td>";
                         row = row + "<td>" + value.Price + "</td>";
-                        row = row + "<td><span class='glyphicon glyphicon-times'/></td>";
+                        row = row + "<td style='text-align:center'><span class='glyphicon glyphicon-remove removeProd' style='cursor:pointer' data-id='" + value.Id + "'/></td>";
                         row = row + "</tr>";
                     });
                     $("#tbodyProd").html(row);
+
+                    $(".removeProd").click(function () {
+                        var id = $(this).data("id");                        
+                        $.ajax({
+                            type: "POST",
+                            url: "/Manage/RemoveProd",
+                            data: { "id": id },
+                            dataType: 'json',
+                            success: function (Data) {                           
+                                
+                            },
+
+                        });
+                        $("#prod" + id).remove();
+                       
+                    });
                 },
                
             });
@@ -240,22 +259,30 @@
                 }
             });
 
-            $('#tblServicesAndParts').DataTable();
+            $('#tblServicesAndParts').DataTable({
+                "pageLength": 5});
 
             $(".add-bookingPrice").click(function () {
                 var that = this;
                 var id = $(that).data("id");
-                if ($(this).hasClass("glyphicon-edit")) {
-                    prods.push({ "qtd": $("#qtde"+id).val(), "id": $(that).data("id") });
-                    $(that).removeClass("glyphicon-edit");
-                    $(that).addClass("glyphicon-erase");
+                if ($(this).hasClass("glyphicon-plus")) {
+                    prods.push({ "qtd": $("#qtde" + id).val(), "id": $(that).data("id") });
+                    $(that).removeClass("glyphicon-plus");
+                    $(that).addClass("glyphicon-remove");
+                } else {
+                    prods = jQuery.grep(prods, function (value) {
+                        return value.id != id;
+                    });                        
+                   
+                    $(that).removeClass("glyphicon-remove");
+                    $(that).addClass("glyphicon-plus");
                 }
             });
 
             $(".addProd").click(function () {
                 addProducts();
             });
-
+            addProducts();
         });
     </script>
 

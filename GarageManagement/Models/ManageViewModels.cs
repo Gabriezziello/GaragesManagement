@@ -142,6 +142,12 @@ namespace GarageManagement.Models
         public int Id { get; set; }
     }
 
+    public class PrintView
+    {
+        public Bookings Booking { get; set; }
+        public List<booking_cost> Products { get; set; }
+    }
+
     public class ServicesAndPartsView
     {
         [Required]

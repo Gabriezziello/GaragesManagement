@@ -4,34 +4,32 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d39a3b1a22a246be89c99c8120a9aa1d" Name="Diagram1">
-        <EntityTypeShape EntityType="GarageManagementModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GarageManagementModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GarageManagementModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="GarageManagementModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GarageManagementModel.AspNetUsers" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+      <Diagram DiagramId="d39a3b1a22a246be89c99c8120a9aa1d" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="GarageManagementModel.AspNetRoles" Width="1.5" PointX="3.5" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GarageManagementModel.AspNetUserClaims" Width="1.5" PointX="9.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GarageManagementModel.AspNetUserLogins" Width="1.5" PointX="5.375" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GarageManagementModel.AspNetUsers" Width="1.5" PointX="7.375" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="GarageManagementModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="GarageManagementModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="GarageManagementModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="GarageManagementModel.Customer" Width="1.5" PointX="3.375" PointY="6.75" />
-        <EntityTypeShape EntityType="GarageManagementModel.Makes" Width="1.5" PointX="7.625" PointY="6.875" />
-        <EntityTypeShape EntityType="GarageManagementModel.Staff" Width="1.5" PointX="5.25" PointY="10.25" />
-        <EntityTypeShape EntityType="GarageManagementModel.VehicleType" Width="1.5" PointX="5.375" PointY="7" />
+        <EntityTypeShape EntityType="GarageManagementModel.Customer" Width="1.5" PointX="4.125" PointY="5.625" />
+        <EntityTypeShape EntityType="GarageManagementModel.Makes" Width="1.5" PointX="8.25" PointY="6.625" />
+        <EntityTypeShape EntityType="GarageManagementModel.Staff" Width="1.5" PointX="11.75" PointY="3.5" />
+        <EntityTypeShape EntityType="GarageManagementModel.VehicleType" Width="1.5" PointX="6.125" PointY="6.625" />
         <AssociationConnector Association="GarageManagementModel.FK__Staff__UserId__3F466844" />
         <AssociationConnector Association="GarageManagementModel.FK__Makes__VehicleTy__3C69FB99" />
-        <EntityTypeShape EntityType="GarageManagementModel.BookingTypes" Width="1.5" PointX="5.25" PointY="13.75" />
-        <EntityTypeShape EntityType="GarageManagementModel.Status" Width="1.5" PointX="7.375" PointY="0.875" />
-        <EntityTypeShape EntityType="GarageManagementModel.Brands" Width="1.5" PointX="7.375" PointY="3.75" />
-        <EntityTypeShape EntityType="GarageManagementModel.EngineType" Width="1.5" PointX="9.375" PointY="0.875" />
-        <EntityTypeShape EntityType="GarageManagementModel.Bookings" Width="1.5" PointX="11.625" PointY="6" />
+        <EntityTypeShape EntityType="GarageManagementModel.BookingTypes" Width="1.5" PointX="12.5" PointY="6.375" />
+        <EntityTypeShape EntityType="GarageManagementModel.Status" Width="1.5" PointX="11.375" PointY="1.375" />
+        <EntityTypeShape EntityType="GarageManagementModel.EngineType" Width="1.5" PointX="13.375" PointY="1.25" />
+        <EntityTypeShape EntityType="GarageManagementModel.Bookings" Width="1.5" PointX="9.875" PointY="3.375" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__Bookin__66603565" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__Custom__6754599E" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__Engine__693CA210" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__Status__68487DD7" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__Vehicl__6A30C649" />
         <AssociationConnector Association="GarageManagementModel.FK__Bookings__StaffI__72C60C4A" />
-        <EntityTypeShape EntityType="GarageManagementModel.ServicesAndParts" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="GarageManagementModel.booking_cost" Width="1.5" PointX="13.875" PointY="7.625" />
+        <EntityTypeShape EntityType="GarageManagementModel.ServicesAndParts" Width="1.5" PointX="5.25" PointY="3.375" />
+        <EntityTypeShape EntityType="GarageManagementModel.booking_cost" Width="1.5" PointX="14.875" PointY="3.5" />
         <AssociationConnector Association="GarageManagementModel.FK__booking_c__Booki__778AC167" />
         <AssociationConnector Association="GarageManagementModel.FK__booking_c__Servi__787EE5A0" />
       </Diagram>

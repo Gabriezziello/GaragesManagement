@@ -39,11 +39,16 @@
 
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     }
-                    else
+                    else if (User.IsInRole("Staff"))
                     {
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("Bookings", "BookingsAdmin", "Manage")</li>
                         <li>@Html.ActionLink("Services / Auto Parts", "ServicesAndParts", "Manage")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Book a service", "Booking", "Manage")</li>                        
 
                     }
 

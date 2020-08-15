@@ -196,16 +196,10 @@
     <Compile Include="booking_cost.cs">
       <DependentUpon>GarageManagement.tt</DependentUpon>
     </Compile>
-    <Compile Include="Brands.cs">
-      <DependentUpon>GarageManagement.tt</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Customer.cs">
-      <DependentUpon>GarageManagement.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>GarageManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="EngineType.cs">
@@ -654,6 +648,7 @@
     <Content Include="Views\Manage\EditService.cshtml" />
     <Content Include="Views\Manage\ConfirmServicesAndParts.cshtml" />
     <Content Include="Views\Manage\ModalConfirmServicesAndParts.cshtml" />
+    <Content Include="Views\Manage\Print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
