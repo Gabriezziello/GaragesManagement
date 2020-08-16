@@ -10,6 +10,7 @@
 {
     @Html.AntiForgeryToken()
     <h4>Please, fill the details and pick an available date.</h4>
+    <p>It will be filled with the details from your last booking.</p>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -154,7 +155,8 @@
                         format: 'DD/MM/yyyy',
                         defaultDate: new Date(),
                         disabledDates: data.list,
-                        daysOfWeekDisabled: [0]
+                        daysOfWeekDisabled: [0],
+                        minDate: new Date()
                     });
                 });
             },

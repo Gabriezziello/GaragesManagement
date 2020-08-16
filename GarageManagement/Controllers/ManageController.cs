@@ -152,7 +152,33 @@ namespace GarageManagement.Controllers
             ViewBag.BookingTypes = GetBookingTypes();
             ViewBag.VehicleTypeList = GetVehicleTypes();
             ViewBag.EngineTypes = GetEngineTypes();
-            return View();
+            using (GarageManagementEntities entities = new GarageManagementEntities())
+            {
+                var listMakes = entities.Makes.ToList();
+                var userId = User.Identity.GetUserId();
+                var customerId = entities.Customer.FirstOrDefault(x => x.UserId == userId).Id;
+                var booking = entities.Bookings.OrderByDescending(x => x.DueDate).FirstOrDefault(x => x.CustomerId == customerId);
+                var model = new BookingView()
+                {
+                    BookingTypeId = booking.BookingTypeId,
+                    DueDate = booking.DueDate.Value,
+                    Make = listMakes.Any(y => y.Name == booking.Make) ? booking.Make : "Other",
+                    EngineType = booking.EngineTypeId,
+                    Observation = booking.Observation,
+                    Other = listMakes.Any(y => y.Name == booking.Make) ? "" : booking.Make,
+                    VehicleType = booking.VehicleTypeId,
+                    VLC = booking.VLC,
+                    VRC = booking.VRC,
+                    Licence = booking.Licence,
+                    StatusName = booking.Status.Name,
+                    StatusId = booking.StatusId,
+                    Id = booking.Id,
+                    BasicCost = booking.BasicCost.HasValue ? booking.BasicCost.Value : 0,
+                    StaffId = booking.StaffId.HasValue ? booking.StaffId.Value : 0
+
+                };
+                return View(model);
+            }             
         }
 
         //
