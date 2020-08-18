@@ -260,24 +260,28 @@
             });
 
             $('#tblServicesAndParts').DataTable({
-                "pageLength": 5});
+                "pageLength": 5,
+                "drawCallback": function (settings) {
+                    $(".add-bookingPrice").click(function () {
+                        var that = this;
+                        var id = $(that).data("id");
+                        if ($(this).hasClass("glyphicon-plus")) {
+                            prods.push({ "qtd": $("#qtde" + id).val(), "id": $(that).data("id") });
+                            $(that).removeClass("glyphicon-plus");
+                            $(that).addClass("glyphicon-remove");
+                        } else {
+                            prods = jQuery.grep(prods, function (value) {
+                                return value.id != id;
+                            });
 
-            $(".add-bookingPrice").click(function () {
-                var that = this;
-                var id = $(that).data("id");
-                if ($(this).hasClass("glyphicon-plus")) {
-                    prods.push({ "qtd": $("#qtde" + id).val(), "id": $(that).data("id") });
-                    $(that).removeClass("glyphicon-plus");
-                    $(that).addClass("glyphicon-remove");
-                } else {
-                    prods = jQuery.grep(prods, function (value) {
-                        return value.id != id;
-                    });                        
-                   
-                    $(that).removeClass("glyphicon-remove");
-                    $(that).addClass("glyphicon-plus");
+                            $(that).removeClass("glyphicon-remove");
+                            $(that).addClass("glyphicon-plus");
+                        }
+                    });
                 }
             });
+
+           
 
             $(".addProd").click(function () {
                 addProducts();

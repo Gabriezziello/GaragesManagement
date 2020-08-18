@@ -158,7 +158,7 @@ namespace GarageManagement.Controllers
                 var userId = User.Identity.GetUserId();
                 var customerId = entities.Customer.FirstOrDefault(x => x.UserId == userId).Id;
                 var booking = entities.Bookings.OrderByDescending(x => x.DueDate).FirstOrDefault(x => x.CustomerId == customerId);
-                var model = new BookingView()
+                var model = booking != null ? new BookingView()
                 {
                     BookingTypeId = booking.BookingTypeId,
                     DueDate = booking.DueDate.Value,
@@ -176,7 +176,7 @@ namespace GarageManagement.Controllers
                     BasicCost = booking.BasicCost.HasValue ? booking.BasicCost.Value : 0,
                     StaffId = booking.StaffId.HasValue ? booking.StaffId.Value : 0
 
-                };
+                } : null;
                 return View(model);
             }             
         }
@@ -480,7 +480,7 @@ from Staff a left join Bookings b on b.StaffId = a.Id and (b.DueDate = '{0}' or 
                     StatusName = booking.Status.Name,
                     StatusId = booking.StatusId,
                     Id = booking.Id,
-                    BasicCost = booking.BasicCost.Value,
+                    BasicCost = booking.BasicCost.HasValue ? booking.BasicCost.Value : 0,
                     StaffId = booking.StaffId.HasValue ? booking.StaffId.Value : 0
 
                 };
